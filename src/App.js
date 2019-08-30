@@ -17,7 +17,7 @@ const App = () => {
         setPersons(response.data)
       })
   }
-  
+
   useEffect(hook, [])
 
   const rows = () => persons.map(person =>
@@ -28,15 +28,20 @@ const App = () => {
   )
 
   const handleFilterChange = (event) => {
+    event.preventDefault()
     console.log(event.target.value)
     setNewFilter(event.target.value)
+    const flags = 'gi'
+    const regex = new RegExp(`${newFilter}`, flags)
+    const filt = person => person.name.match(regex)
+    setPersons(persons.filter(filt))
   }
 
-  const filterPersons = (event) => {
+  /*const filterPersons = (event) => {
     event.preventDefault()
     const filt = person => person.name === newFilter
     setPersons(persons.filter(filt))
-  }
+  }*/
 
 
   const handleNameChange = (event) => {
@@ -72,14 +77,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={filterPersons}>
         <div>
         filter shown with: <input defaultValue={newFilter} onChange={handleFilterChange} />
         </div>
-        <div>
-          <button type="submit">filter</button>
-        </div>  
-      </form>
       <h2>Add a new</h2>
       <form onSubmit={addDetail}>
         <div>
