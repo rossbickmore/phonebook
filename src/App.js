@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import Note from './Note'
 
-function App() {
+const App = () => {
+  const [ persons, setPersons] = useState([
+    { name: 'Arto Hellas'}
+  ]) 
+  const [ newName, setNewName ] = useState('Add name')
+
+  const rows = () => persons.map(person =>
+    <Note 
+      name={person.name}
+      />
+  )
+
+  /* addName function that changes the state by adding a name to persons*/
+
+  const handleNameChange = (event) => {
+    console.log(event.target.value)
+    setNewName(event.target.value)
+  }
+
+  const addName = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      name: newName,
+      id: persons.length + 1,
+    }
+    setPersons(persons.concat(noteObject))
+    setNewName('')
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addName}>
+        <div>
+          name: <input defaultValue={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+        <div>
+          <ul>
+            {rows()}
+          </ul>
+        </div>
+      <div>debug: {newName}</div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
