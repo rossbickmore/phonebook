@@ -37,12 +37,6 @@ const App = () => {
     setPersons(persons.filter(filt))
   }
 
-  /*const filterPersons = (event) => {
-    event.preventDefault()
-    const filt = person => person.name === newFilter
-    setPersons(persons.filter(filt))
-  }*/
-
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -58,19 +52,26 @@ const App = () => {
     event.preventDefault()
     const noteObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1,
+      number: newNumber
     }
 
-    const contain = person => person.name === newName
+    axios
+    .post('http://localhost:3001/persons', noteObject)
+    .then(response => {
+      setPersons(persons.concat(response.data))
+      setNewName('')
+      setNewNumber('')
+    })
 
-    if (persons.some(contain)) {
+    /*const contain = person => person.name === newName
+
+    /*if (persons.some(contain)) {
       window.alert(`${newName} is already added to phonebook`);
     } else {
       setPersons(persons.concat(noteObject))
       setNewName('')
       setNewNumber('')
-    }
+    }*/
     
   }
 
